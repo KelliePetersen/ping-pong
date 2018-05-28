@@ -14,20 +14,27 @@ let canvasContext;
 
 // Turn into ball object
 let ballX = 50;
+let ballSpeedX = 5;
 
 function moveBall() {
-  ballX += 10;
+  if (ballX > canvas.width) {
+    ballSpeedX = -ballSpeedX;
+  } 
+  if (ballX < 0) {
+    ballSpeedX = -ballSpeedX;
+  }
+  ballX += ballSpeedX;
 }
 
 function drawGame() {
-  canvasContext.fillStyle = 'black';
-  canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-
+  createRect(0, 0, canvas.width, canvas.height, 'black');
   // Turn into ball object/balls constructor, with random traits
-  canvasContext.fillStyle = "white";
-  canvasContext.fillRect(ballX, 200, 10, 10);
-
+  createRect(ballX, 200, 10, 10, 'white');
   // Turn into player object
-  canvasContext.fillStyle = "white";
-  canvasContext.fillRect(0, 100, 25, 50);
+  createRect(0, 100, 25, 50, 'white');
+}
+
+function createRect(x, y, width, height, color) {
+  canvasContext.fillStyle = color;
+  canvasContext.fillRect(x, y, width, height);
 }
