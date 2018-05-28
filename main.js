@@ -26,31 +26,36 @@ let ballSpeedY = 5;
 
 // Player
 const paddleHeight = 100;
-const paddleWidth = 25;
+const paddleWidth = 10;
 let paddleY = 250;
 
 let compPaddleY = 250;
 
 let playerScore = 0;
 let computerScore = 0;
+const winningScore = 5;
 
 function moveBall() {
   if (ballX > canvas.width) {
     ballSpeedX = -ballSpeedX;
     if (ballY > compPaddleY && ballY < compPaddleY + paddleHeight) {
-      computerScore += 1;
+      let deltaY = ballY - (compPaddleY + paddleHeight / 2);
+      ballSpeedY = deltaY * 0.35;
     } else {
       resetBall();
-      computerScore = 0;
+      playerScore++;
+      scoreTracker();
     }
   } 
   if (ballX < 0) {
     ballSpeedX = -ballSpeedX;
     if (ballY > paddleY && ballY < paddleY + paddleHeight) {
-      playerScore += 1;
+      let deltaY = ballY - (paddleY + paddleHeight/2);
+      ballSpeedY = deltaY * 0.35;
     } else {
       resetBall();
-      playerScore = 0;
+      computerScore++;
+      scoreTracker();
     }
   }
   if (ballY > canvas.height) {
@@ -106,5 +111,19 @@ function computerMovement() {
     compPaddleY += 5;
   } else if (compPaddleYCenter > ballY + 35) {
     compPaddleY -= 5;
+  }
+}
+
+function scoreTracker() {
+  if (playerScore === winningScore) {
+    console.log("player wins!");
+    playerScore = 0;
+    computerScore = 0;
+    resetBall();
+  } else if (computerScore === winningScore) {
+    console.log("computer wins!");
+    playerScore = 0;
+    computerScore = 0;
+    resetBall();
   }
 }
